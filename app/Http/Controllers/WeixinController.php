@@ -20,4 +20,9 @@ class WeixinController extends Controller
         $response = $response->getBody()->getContents();
         return response()->json($response);
     }
+
+    public function test()
+    {
+        dd('test');
+    }
 }

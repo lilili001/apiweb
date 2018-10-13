@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 
 Route::get('wxlogin','WeixinController@login');
+Route::get('wx.php','wechatCallbackapiController@responseMsg');
