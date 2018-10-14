@@ -15,5 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('wxlogin','WeixinController@login');
-Route::get('wx.php','wechatCallbackapiController@responseMsg');
+Route::get('wxlogin','WxCbController@login');
+Route::get('wx','WxCbController@valid');
+Route::post('wx','WxCbController@responseMsg');
+Route::group(['prefix'=>'wxApi'],function($router){
+    $router->post('sendTemplateMsg','WxCbController@sendTemplateMsg');
+});

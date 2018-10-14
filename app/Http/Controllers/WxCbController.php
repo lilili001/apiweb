@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 define("TOKEN", "weixin");
 define('APPID','wx2a14dfa04ea63060');
 define('APPSECRET','eb5bc7d0b1c6745aedeb68ad39348b7c');
 
-class wechatCallbackapiController extends Controller
+class WxCbController extends Controller
 {
     public function valid()//验证接口的方法
     {
@@ -22,28 +23,33 @@ class wechatCallbackapiController extends Controller
         }
     }
     //公有的responseMsg的方法，是我们回复微信的关键。以后的章节修改代码就是修改这个。
-    public function responseMsg()
+    public function responseMsg(Request $request)
     {
-        dd('response');
+        info('111');
+        //info( json_encode($request->all()));
         //get post data, May be due to the different environments
-        $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];//将用户端放松的数据保存到变量postStr中，由于微信端发送的都是xml，使用postStr无法解析，故使用$GLOBALS["HTTP_RAW_POST_DATA"]获取
-        info('postStr:'.$postStr);
+        $postStr = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : file_get_contents("php://input");
+
+        //$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];//将用户端放松的数据保存到变量postStr中，由于微信端发送的都是xml，使用postStr无法解析，故使用$GLOBALS["HTTP_RAW_POST_DATA"]获取
+        //info('postStr:'.$postStr);
         //extract post data如果用户端数据不为空，执行30-55否则56-58
         if (!empty($postStr)){
 
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);//将postStr变量进行解析并赋予变量postObj。simplexml_load_string（）函数是php中一个解析XML的函数，SimpleXMLElement为新对象的类，LIBXML_NOCDATA表示将CDATA设置为文本节点，CDATA标签中的文本XML不进行解析
-
+            info('postObj:'.json_encode($postObj));
             //get openid,最好使用trim方法去除空格
-            $openid = $postObj->FromUserName;//用户的openid, 将微信用户端的用户名赋予变量FromUserName
+            $openid = trim($postObj->FromUserName);//用户的openid, 将微信用户端的用户名赋予变量FromUserName
             $content = trim($postObj->Content);//获取用户发送的内容
 
             //  获取acsess_token 这个每天最多请求微信服务器2000次, 过期时间2小时, 所以开发的时候常保存到数据库或文件,
             //  每次请求后台的时候查看acsess_token是否过期, 如果过期则要重新调用微信api获取acsess_token
-            $accessToken = json_decode($this->getAccessToken(),true)['access_token'];
+
+            $accessToken =  $this->getAccessToken() ;
+            info('\n $accessToken 01:'. $accessToken);
 
             //客服接口-发消息
             $postMsgApi = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={$accessToken}";
-
+            info('\n $postMsgApi:'. ($postMsgApi));
             $data = [
                 "touser" => $openid,
                 "msgtype"=> "text",
@@ -58,12 +64,14 @@ class wechatCallbackapiController extends Controller
                 $data['text']['content'] = urlencode('你好,欢迎来到miyaye的部落');
             }
 
-            $data = urldecode(json_encode($data));
-            $str = $this->httpPost($data,$postMsgApi);
-            echo $str;
+            $str = $this->httpPost(urldecode(json_encode($data)),$postMsgApi);
+
+            info('\n str:'. json_encode($str));
+
+            return $str;
 
         }else {
-            echo "";//回复为空，无意义，调试用
+            return "回复为空，无意义，调试用";//回复为空，无意义，调试用
             exit;
         }
     }
@@ -87,16 +95,86 @@ class wechatCallbackapiController extends Controller
         }
     }
 
+    //微信登陆api
+    public function login()
+    {
+        $appid = config('wx.xiaochengxu.appid');
+        $appsecret = config('wx.xiaochengxu.appsecret');
+        $jscode = request('js_code');
+        $url = "https://api.weixin.qq.com/sns/jscode2session?appid={$appid}&secret={$appsecret}&js_code=$jscode&grant_type=authorization_code";
+
+        $client = new Client();
+        $response = $client->request('get',$url);
+        $response = $response->getBody()->getContents();
+        return response()->json($response);
+    }
+
+    public function sendTemplateMsg(Request $request)
+    {
+        $openid = $request->get('openId');
+        $formid = $request->get('formId');
+        $name = $request->get('name');
+        $address = $request->get('address');
+        $price = $request->get('price');
+        $date = $request->get('date');
+        $templateID = 'I8Dj59WV-cqJKRMDXhox0ST6-KRg0n3bZa24qAcoM_g';//从公众号后台获取
+
+        $data = <<<END
+{
+  "touser": "{$openid}",
+  "template_id": "{$templateID}",
+  "page": "index",
+  "form_id": "{$formid}",
+  "data": {
+      "keyword1": {
+          "value": "{$address}"
+      },
+      "keyword2": {
+          "value": "{$date}"
+      },
+      "keyword3": {
+          "value": "{$name}"
+      } ,
+      "keyword4": {
+          "value": "{$price}"
+      }
+  },
+  "emphasis_keyword": "keyword3.DATA"
+}
+END;
+
+        $access_token = $this->getAccessToken();
+        $sendTemplateMessageApi = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token={$access_token}";
+
+        //$res = $this->httpPost($data,$sendTemplateMessageApi);
+
+        $client = new Client();
+
+        $res = $client->request('POST', $sendTemplateMessageApi, [
+            'json' => json_decode($data,true)
+        ]
+         );
+        return $res;
+    }
+    
     private function getAccessToken() {
         $appid = APPID;
         $secret = APPSECRET;
         // access_token 应该全局存储与更新，以下代码以写入到文件中做示例
-        $data = json_decode($this->get_php_file("access_token.php"));
+        info('function:getAccessToken');
+        $data = json_decode($this->get_php_file(public_path('access_token.php')));
+        info('\n data:'.json_encode($data));
         if ($data->expire_time < time()) {
+            info('\n 222');
             // 如果是企业号用以下URL获取access_token
             // $url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=$this->appId&corpsecret=$this->appSecret";
             $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appid}&secret={$secret}";
-            $res = json_decode($this->httpGet($url));
+            info('\n url:'.$url);
+
+            $res = $this->httpGet($url);
+            info( '\n access_token api res:' . $res );
+            $res = json_decode($res);
+
             $access_token = $res->access_token;
             if ($access_token) {
                 $data->expire_time = time() + 7000;
@@ -104,7 +182,9 @@ class wechatCallbackapiController extends Controller
                 $this->set_php_file("access_token.php", json_encode($data));
             }
         } else {
+            info('333');
             $access_token = $data->access_token;
+            info('333 access_token:'.$access_token);
         }
         return $access_token;
     }
@@ -116,7 +196,7 @@ class wechatCallbackapiController extends Controller
         // 为保证第三方服务器与微信服务器之间数据传输的安全性，所有微信接口采用https方式调用，必须使用下面2行代码打开ssl安全校验。
         // 如果在部署过程中代码在此处验证失败，请到 http://curl.haxx.se/ca/cacert.pem 下载新的证书判别文件。
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($curl, CURLOPT_URL, $url);
 
         $res = curl_exec($curl);
@@ -132,11 +212,11 @@ class wechatCallbackapiController extends Controller
         // 为保证第三方服务器与微信服务器之间数据传输的安全性，所有微信接口采用https方式调用，必须使用下面2行代码打开ssl安全校验。
         // 如果在部署过程中代码在此处验证失败，请到 http://curl.haxx.se/ca/cacert.pem 下载新的证书判别文件。
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($curl, CURLOPT_URL, $url);
 
         curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 
         $res = curl_exec($curl);
         curl_close($curl);
