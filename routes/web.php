@@ -22,8 +22,10 @@ Route::group(['prefix'=>'wxApi'],function($router){
     $router->post('sendTemplateMsg','WxCbController@sendTemplateMsg');
 });
 
-Route::group(['prefix'=>'wechat'],function($router){
+Route::any('wechat',"WechatController@serve");
+
+/*Route::group(['prefix'=>'wechat'],function($router){
     $router->get('wx', 'WechatController@valid' );
     $router->post('wx', 'WechatController@responseMsg' );
     $router->get('createMenu','WechatController@createMenu');
-});
+});*/

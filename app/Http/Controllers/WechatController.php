@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
-include "App/LaneWeChat/wechat.php";
-
+ 
 define("TOKEN", "weixin");
 define('APPID', 'wxf6e6082a60d63506');
 define('APPSECRET', 'f0935021fa50e3c3d5147ed4afe8b551');
@@ -127,61 +126,16 @@ class WechatController extends Controller
         fclose($fp);
     }
 
-
-    //公有的responseMsg的方法，是我们回复微信的关键。以后的章节修改代码就是修改这个。
-    public function responseMsg(Request $request)
+    public function serve()
     {
-        /*
-         info('进入了 responseMsg 方法');
-         //info( json_encode($request->all()));
-         //get post data, May be due to the different environments
-         $postStr = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : file_get_contents("php://input");
+        Log::info('request arrived.'); # 注意：Log 为 Laravel 组件，所以它记的日志去 Laravel 日志看，而不是 EasyWeChat 日志
 
-         //$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];//将用户端放松的数据保存到变量postStr中，由于微信端发送的都是xml，使用postStr无法解析，故使用$GLOBALS["HTTP_RAW_POST_DATA"]获取
-         //info('postStr:'.$postStr);
-         //extract post data如果用户端数据不为空，执行30-55否则56-58
-         if (!empty($postStr)){
+        $app = app('wechat.official_account');
+        $app->server->push(function($message){
+            return "欢迎关注 overtrue！";
+        });
 
-             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);//将postStr变量进行解析并赋予变量postObj。simplexml_load_string（）函数是php中一个解析XML的函数，SimpleXMLElement为新对象的类，LIBXML_NOCDATA表示将CDATA设置为文本节点，CDATA标签中的文本XML不进行解析
-             info('postObj:'.json_encode($postObj));
-             //get openid,最好使用trim方法去除空格
-             $openid = trim($postObj->FromUserName);//用户的openid, 将微信用户端的用户名赋予变量FromUserName
-             $content = trim($postObj->Content);//获取用户发送的内容
-
-             //  获取acsess_token 这个每天最多请求微信服务器2000次, 过期时间2小时, 所以开发的时候常保存到数据库或文件,
-             //  每次请求后台的时候查看acsess_token是否过期, 如果过期则要重新调用微信api获取acsess_token
-
-             $accessToken =  $this->getAccessToken() ;
-             info('\n $accessToken 01:'. $accessToken);
-
-             //客服接口-发消息
-             $postMsgApi = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={$accessToken}";
-             info('\n $postMsgApi:'. ($postMsgApi));
-             $data = [
-                 "touser" => $openid,
-                 "msgtype"=> "text",
-                 "text"=> [
-                     "content"=>"Hello World"
-                 ]
-             ];
-
-             if($content == '价格'){
-                 $data['text']['content'] = urlencode('价格是100w');
-             }else{
-                 $data['text']['content'] = urlencode('你好,欢迎来到miyaye的部落');
-             }
-
-             $str = $this->httpPost(urldecode(json_encode($data)),$postMsgApi);
-
-             info('\n str:'. json_encode($str));
-
-             return $str;
-
-         }else {
-             return "回复为空，无意义，调试用";//回复为空，无意义，调试用
-             exit;
-         }*/
+        return $app->server->serve();
     }
-
 
 }
