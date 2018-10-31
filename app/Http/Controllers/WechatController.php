@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
-include "App/LaneWechat/wechat.php";
+include "App/LaneWeChat/wechat.php";
 
 define("TOKEN", "weixin");
 define('APPID', 'wxf6e6082a60d63506');
