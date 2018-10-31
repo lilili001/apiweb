@@ -151,8 +151,18 @@ class WechatController extends Controller
 
                     $media = new Media('6N2Wu2qHBkGBqpruD0ZI9-wXvO835A0j636cH8AIK8M', 'mpnews');
 
-                    return '收到您的消息, 返回一条消息给你, 哈哈哈';
+                    $items = [
+                        new NewsItem([
+                            'title'       => "平语”近人——坚定不移贯彻新发展理念，习近平这些话意义深远",
+                            'description' => "编前语】2015年10月29日，党的十八届五中全会公报发表，会议提出了创新、协调、绿色、开放、共享的新发展理念。对于这五大发展理念，习近平总书记在不同场合作出了深入阐释",
+                            'url'         => "http://www.xinhuanet.com/politics/xxjxs/2018-10/29/c_1123630541.htm",
+                            'image'       => "http://news.xinhuanet.com/politics/2016-09/18/129284700_14741694437441n.jpg",
+                        ]),
+                    ];
+                    $news = new News($items);
 
+                    //return '收到您的消息, 返回一条消息给你, 哈哈哈';
+                    return new News($items);
                     break;
                 case 'image':
                     $image = new Image("6N2Wu2qHBkGBqpruD0ZI9573QfWgtKw2B-rga6qYtH8");
