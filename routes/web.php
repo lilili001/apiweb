@@ -28,15 +28,16 @@ Route::group(['middleware'=>'web'],function (){
     Route::get('remark/{openid}','UsersController@remark');
 
     //素材管理
-    Route::get('mediaList',"MaterialController@mediaList");
+    Route::get('materialList',"MaterialController@materialList");
     Route::get('image',"MaterialController@image");
     Route::get('uploadNews',"MaterialController@uploadNews");
     Route::get('audio',"MaterialController@audio");
     Route::get('material/{mediaid}',"MaterialController@material");
-    Route::get('test',function (){
-        return public_path().'/images/songqian.jpg';
-    });
+
+    Route::get('test',"MaterialController@test");
+
 });
+
 
 Route::any('wechat',"WechatController@serve");
 

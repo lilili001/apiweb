@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use EasyWeChat\Kernel\Messages\Article;
+use EasyWeChat\Kernel\Messages\Media;
 use Illuminate\Http\Request;
+use GuzzleHttp\Client;
 
 class MaterialController extends Controller
 {
@@ -47,9 +49,9 @@ class MaterialController extends Controller
 
     /*******************获取所有的图片素材列表**************************************/
     /*******************经过上面的 image方法上传完图片后 此处在这个列表中可以看到********************************/
-    public function mediaList()
+    public function materialList()
     {
-        $list = $this->wechat->material->list('news');
+        $list = $this->wechat->material->list('images');
         dd($list);
     }
 
@@ -58,7 +60,8 @@ class MaterialController extends Controller
     {
         $stream = $this->wechat->material->get($mediaid);
 
-        file_put_contents('a.jpg',$stream);
+        //dd($stream);
+        //file_put_contents('a.jpg',$stream);
         /*或者如下*/
        /* if ($stream instanceof \EasyWeChat\Kernel\Http\StreamResponse) {
             // 以内容 md5 为文件名
@@ -67,6 +70,16 @@ class MaterialController extends Controller
             // 自定义文件名，不需要带后缀
             //$stream->saveAs('保存目录', '文件名');
         }*/
+
+
     }
 
+    public function test()
+    {
+        $accessToken = $this->wechat->access_token;
+        $token = $accessToken->getToken()['access_token'];
+
+
+    }
+    
 }

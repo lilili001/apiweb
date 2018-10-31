@@ -150,7 +150,7 @@ class WechatController extends Controller
 
                     $media = new Media('6N2Wu2qHBkGBqpruD0ZI9-wXvO835A0j636cH8AIK8M', 'mpnews');
 
-                    return $media;
+                    return '收到您的消息, 返回一条消息给你, 哈哈哈';
 
                     break;
                 case 'image':

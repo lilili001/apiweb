@@ -95,6 +95,7 @@ class WxCbController extends Controller
         }
     }
 
+    
     //微信登陆api
     public function login()
     {
