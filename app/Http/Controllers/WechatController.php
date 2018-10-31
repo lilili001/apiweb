@@ -140,7 +140,7 @@ class WechatController extends Controller
                     break;
                 case 'text':
                     info( $userApi->get( $message->FromUserName ) );
-                    return '收到文字消息,你好:' . $userApi->get( $message->FromUserName )->nickname  ;
+                    return '收到文字消息,你好:' . $userApi->get( $message['FromUserName'] )->nickname  ;
                     break;
                 case 'image':
                     return '收到图片消息';
