@@ -142,7 +142,8 @@ class WechatController extends Controller
                     $openId = $message['FromUserName'];
                     info('user info');
                     info( $userApi->get( $openId ) );
-                    return '收到文字消息,你好:' . $userApi->get( $openId )->nickname  ;
+                    $user = $userApi->get( $openId );
+                    return '收到文字消息,你好:' . $user['nickname'] ;
                     break;
                 case 'image':
                     return '收到图片消息';
