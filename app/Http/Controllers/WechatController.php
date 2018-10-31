@@ -138,6 +138,8 @@ class WechatController extends Controller
         $userApi = $wechat->user;
 
         $wechat->server->push(function ($message) use($userApi) {
+            info('message');
+            info($message);
             switch ($message['MsgType']) {
                 case 'event':
                     return '收到事件消息';
@@ -197,5 +199,6 @@ class WechatController extends Controller
 
         return $wechat->server->serve();
     }
+
 
 }

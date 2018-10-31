@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use EasyWeChat\Kernel\Messages\Article;
+use EasyWeChat\Kernel\Messages\Image;
 use EasyWeChat\Kernel\Messages\Media;
+use EasyWeChat\Kernel\Messages\Message;
+use EasyWeChat\Kernel\Messages\News;
+use EasyWeChat\Kernel\Messages\NewsItem;
+use EasyWeChat\Kernel\Messages\Text;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 
@@ -78,8 +83,69 @@ class MaterialController extends Controller
     {
         $accessToken = $this->wechat->access_token;
         $token = $accessToken->getToken()['access_token'];
-
-
     }
-    
+
+
+    /***************消息群发***********************/
+    public function message()
+    {
+        $wechat = app('wechat.official_account');
+        $items = [
+            new NewsItem([
+                'title'       => "平语”近人——坚定不移贯彻新发展理念，习近平这些话意义深远",
+                'description' => "编前语】2015年10月29日，党的十八届五中全会公报发表，会议提出了创新、协调、绿色、开放、共享的新发展理念。对于这五大发展理念，习近平总书记在不同场合作出了深入阐释",
+                'url'         => "http://www.xinhuanet.com/politics/xxjxs/2018-10/29/c_1123630541.htm",
+                'image'       => "http://news.xinhuanet.com/politics/2016-09/18/129284700_14741694437441n.jpg",
+            ])
+        ];
+        $news = new News($items);
+
+        $text = new Text('您好！overtrue。');
+        //$image = new Image("6N2Wu2qHBkGBqpruD0ZI9573QfWgtKw2B-rga6qYtH8");
+
+        //return $wechat->broadcasting->sendMessage( $news );
+
+        //测试号不支持消息类型
+        return $wechat->broadcasting->sendNews('6N2Wu2qHBkGBqpruD0ZI9-wXvO835A0j636cH8AIK8M');
+    }
+
+    public function menulist()
+    {
+         $list = $this->wechat->menu->list();
+
+        $current = $this->wechat->menu->current();
+        dd($current);
+    }
+
+    public function create_menu()
+    {
+        $buttons = [
+            [
+                "type" => "click",
+                "name" => "今日歌曲",
+                "key"  => "V1001_TODAY_MUSIC"
+            ],
+            [
+                "name"       => "菜单",
+                "sub_button" => [
+                    [
+                        "type" => "view",
+                        "name" => "搜索",
+                        "url"  => "http://www.soso.com/"
+                    ],
+                    [
+                        "type" => "view",
+                        "name" => "视频",
+                        "url"  => "http://v.qq.com/"
+                    ],
+                    [
+                        "type" => "click",
+                        "name" => "赞一下我们",
+                        "key" => "V1001_GOOD"
+                    ],
+                ],
+            ],
+        ];
+        return $this->wechat->menu->create($buttons);
+    }
 }

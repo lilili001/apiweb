@@ -36,6 +36,12 @@ Route::group(['middleware'=>'web'],function (){
 
     Route::get('test',"MaterialController@test");
 
+    //消息群发
+    Route::get('message',"MaterialController@message");
+
+    //菜单
+    Route::get('menulist',"MaterialController@menulist");
+    Route::get('create_menu',"MaterialController@create_menu");
 });
 
 
