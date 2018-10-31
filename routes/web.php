@@ -55,6 +55,13 @@ Route::group(['middleware' => ['web', 'wechat.oauth']], function ($router) {
 
 Route::any('wechat',"WechatController@serve");
 
+Route::get('qr',function (){
+    $wechat = app('wechat.official_account');
+    $qrcode = $wechat->qrcode;
+    $result = $wechat->qrcode->temporary('foo', 6 * 24 * 3600);
+    return view('qr', compact('result','qrcode') );
+});
+
 /*Route::group(['prefix'=>'wechat'],function($router){
     $router->get('wx', 'WechatController@valid' );
     $router->post('wx', 'WechatController@responseMsg' );
