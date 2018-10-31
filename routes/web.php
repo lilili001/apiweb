@@ -24,4 +24,5 @@ Route::group(['prefix'=>'wxApi'],function($router){
 
 Route::group(['prefix'=>'wechat'],function($router){
     $router->get('wx', 'WechatController@valid' );
+    $router->post('wx', 'WechatController@responseMsg' );
 });
