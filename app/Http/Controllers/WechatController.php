@@ -121,7 +121,7 @@ class WechatController extends Controller
     //公有的responseMsg的方法，是我们回复微信的关键。以后的章节修改代码就是修改这个。
     public function responseMsg(Request $request)
     {
-        info('111');
+        info('进入了 responseMsg 方法');
         //info( json_encode($request->all()));
         //get post data, May be due to the different environments
         $postStr = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : file_get_contents("php://input");
@@ -171,5 +171,6 @@ class WechatController extends Controller
             exit;
         }
     }
+
 
 }
