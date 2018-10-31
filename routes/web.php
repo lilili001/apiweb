@@ -22,6 +22,22 @@ Route::group(['prefix'=>'wxApi'],function($router){
     $router->post('sendTemplateMsg','WxCbController@sendTemplateMsg');
 });
 
+Route::group(['middleware'=>'web'],function (){
+    Route::get('users','UsersController@users');
+    Route::get('user/{openid}','UsersController@user');
+    Route::get('remark/{openid}','UsersController@remark');
+
+    //素材管理
+    Route::get('mediaList',"MaterialController@mediaList");
+    Route::get('image',"MaterialController@image");
+    Route::get('uploadNews',"MaterialController@uploadNews");
+    Route::get('audio',"MaterialController@audio");
+    Route::get('material/{mediaid}',"MaterialController@material");
+    Route::get('test',function (){
+        return public_path().'/images/songqian.jpg';
+    });
+});
+
 Route::any('wechat',"WechatController@serve");
 
 /*Route::group(['prefix'=>'wechat'],function($router){

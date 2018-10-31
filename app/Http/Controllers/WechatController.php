@@ -3,9 +3,12 @@
 
 namespace App\Http\Controllers;
 
+use EasyWeChat\Kernel\Messages\News;
+use EasyWeChat\Kernel\Messages\NewsItem;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
- 
+use LaneWeChat\Core\Media;
+
 define("TOKEN", "weixin");
 define('APPID', 'wxf6e6082a60d63506');
 define('APPSECRET', 'f0935021fa50e3c3d5147ed4afe8b551');
@@ -143,7 +146,12 @@ class WechatController extends Controller
                     info('user info');
                     info( $userApi->get( $openId ) );
                     $user = $userApi->get( $openId );
-                    return '收到文字消息,你好:' . $user['nickname'] ;
+                    //return '收到文字消息,你好:' . $user['nickname'] ;
+
+                    $media = new Media('6N2Wu2qHBkGBqpruD0ZI9-wXvO835A0j636cH8AIK8M', 'mpnews');
+
+                    return $media;
+
                     break;
                 case 'image':
                     return '收到图片消息';
