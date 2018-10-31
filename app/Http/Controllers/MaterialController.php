@@ -23,7 +23,7 @@ class MaterialController extends Controller
     //上传图片素材 注意个人订阅号可能没有权限
     public function image()
     {
-       return $this->wechat->material->uploadImage(public_path('images/songqian.jpg') );
+       return $this->wechat->material->uploadImage(public_path('images/fx.jpg') );
 
        //返回如下
         //{"media_id":"6N2Wu2qHBkGBqpruD0ZI9wBW1mCBYC8jSvbB6e4k_18","url":"http:\/\/mmbiz.qpic.cn\/mmbiz_jpg\/5qQscl5o9sm1GsKALBQyEr5RcX2KuvwOcbTrfqSXia2XjGKrjyAiaDKVYWI1qTYvJssV5PxA3S7ibxoJ6TOr9ZlTA\/0?wx_fmt=jpeg"}
@@ -60,7 +60,7 @@ class MaterialController extends Controller
     {
         $stream = $this->wechat->material->get($mediaid);
 
-        //dd($stream);
+        dd($stream);
         //file_put_contents('a.jpg',$stream);
         /*或者如下*/
        /* if ($stream instanceof \EasyWeChat\Kernel\Http\StreamResponse) {

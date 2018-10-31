@@ -3,11 +3,12 @@
 
 namespace App\Http\Controllers;
 
+use EasyWeChat\Kernel\Messages\Image;
+use EasyWeChat\Kernel\Messages\Media;
 use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
-use LaneWeChat\Core\Media;
 
 define("TOKEN", "weixin");
 define('APPID', 'wxf6e6082a60d63506');
@@ -154,7 +155,9 @@ class WechatController extends Controller
 
                     break;
                 case 'image':
-                    return '收到图片消息';
+                    $image = new Image("6N2Wu2qHBkGBqpruD0ZI9573QfWgtKw2B-rga6qYtH8");
+
+                    return $image;
                     break;
                 case 'voice':
                     return '收到语音消息';
