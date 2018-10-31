@@ -48,7 +48,7 @@ Route::group(['middleware'=>'web'],function (){
 Route::group(['middleware' => ['web', 'wechat.oauth']], function ($router) {
     $router->get('/getuser', function () {
         $user = session('wechat.oauth_user.default'); // 拿到授权用户资料
-        return view('wuser',compact($user));
+        return view('wuser',compact('user'));
     });
 });
 
