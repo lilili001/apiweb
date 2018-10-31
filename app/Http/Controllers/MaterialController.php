@@ -135,8 +135,8 @@ class MaterialController extends Controller
                     ],
                     [
                         "type" => "view",
-                        "name" => "视频",
-                        "url"  => "http://v.qq.com/"
+                        "name" => "登陆",
+                        "url"  => "http://api.astystore.com/getuser"
                     ],
                     [
                         "type" => "click",

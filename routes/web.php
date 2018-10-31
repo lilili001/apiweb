@@ -45,6 +45,15 @@ Route::group(['middleware'=>'web'],function (){
 });
 
 
+Route::group(['middleware' => ['web', 'wechat.oauth']], function () {
+    Route::get('/getuser', function () {
+        $user = session('wechat.oauth_user.default'); // 拿到授权用户资料
+
+        dd($user);
+    });
+});
+
+
 Route::any('wechat',"WechatController@serve");
 
 /*Route::group(['prefix'=>'wechat'],function($router){
