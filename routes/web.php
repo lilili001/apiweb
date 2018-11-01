@@ -50,6 +50,10 @@ Route::group(['middleware'=>'web'],function (){
 Route::group(['middleware' => ['web', 'wechat.oauth']], function ($router) {
     $router->get('/getuser', function () {
         $user = session('wechat.oauth_user.default'); // 拿到授权用户资料
+
+        $user = app('wechat.official_account')->oauth->scopes(['snsapi_userinfo'])
+            ->redirect();
+        dd($user->toArray());
         return view('wuser',compact('user'));
     });
 });
