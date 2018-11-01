@@ -153,16 +153,24 @@ class WechatController extends Controller
                 case 'event':
 
                     if( $message['Event'] == 'subscribe' ){
-                        $wechat->template_message->sendSubscription([
-                            'touser' => $message['FromUserName'],
-                            'template_id' => 'sW3tC35gfCfHYk2SH-0FxcvTnSrA1YlBh4QbLPckd3U',
-                            'url' => 'https://easywechat.org',
-                            'scene' => 1000,
-                            'data' => [
-                                'name' => '东瀛',
-                                'address' => '南极',
-                            ]
-                        ]);
+                        try{
+                            $res = $wechat->template_message->sendSubscription([
+                                'touser' => $message['FromUserName'],
+                                'template_id' => 'sW3tC35gfCfHYk2SH-0FxcvTnSrA1YlBh4QbLPckd3U',
+                                'url' => 'https://easywechat.org',
+                                'scene' => 1000,
+                                'data' => [
+                                    'name' => '东瀛',
+                                    'address' => '南极',
+                                ]
+                            ]);
+
+                            info($res);
+
+                        }catch (\Exception $e){
+                            info($e->getMessage());
+                        }
+
                     }
 
                     return '收到事件消息,并推送一条事件给你';
