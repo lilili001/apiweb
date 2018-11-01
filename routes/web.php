@@ -42,6 +42,8 @@ Route::group(['middleware'=>'web'],function (){
     //菜单
     Route::get('menulist',"MaterialController@menulist");
     Route::get('create_menu',"MaterialController@create_menu");
+
+    Route::get('templateList',"MaterialController@templateList");
 });
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\APIHelper;
 use EasyWeChat\Kernel\Messages\Article;
 use EasyWeChat\Kernel\Messages\Image;
 use EasyWeChat\Kernel\Messages\Media;
@@ -147,5 +148,48 @@ class MaterialController extends Controller
             ],
         ];
         return $this->wechat->menu->create($buttons);
+    }
+
+    public function templateList()
+    {
+        $accessToken = $this->wechat->access_token;
+        $token = $accessToken->getToken()['access_token'];
+        //dd($token);
+
+        //设置所属行业
+        // dd($this->wechat->template_message->setIndustry(1, 2));
+
+        //获取支持的行业列表
+        //dd(  $this->wechat->template_message->getIndustry() );
+
+        //获取用户列表
+        $users = $this->wechat->user->list();
+        //dd($users);
+
+        //发送模板消息
+        /*$res = $this->wechat->template_message->send([
+            'touser' => 'oE_DPvqJnFGZc-zXQXAwPa6XtF48',
+            'template_id' => 'sW3tC35gfCfHYk2SH-0FxcvTnSrA1YlBh4QbLPckd3U',
+            'url' => 'https://easywechat.org',
+            'data' => [
+                'price' => ['128', '#cc0000']
+            ],
+        ]);*/
+
+
+        $res = $this->wechat->template_message->sendSubscription([
+            'touser' => 'oE_DPvqJnFGZc-zXQXAwPa6XtF48',
+            'template_id' => 'sW3tC35gfCfHYk2SH-0FxcvTnSrA1YlBh4QbLPckd3U',
+            'url' => 'https://easywechat.org',
+            'scene' => 1000,
+            'data' => [
+                'name' => '东瀛',
+                'address' => '南极',
+            ]
+        ]);
+
+        dd($res);
+        //获取所有模板列表
+        dd( $this->wechat->template_message->getPrivateTemplates() ) ;
     }
 }

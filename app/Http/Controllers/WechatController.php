@@ -16,6 +16,15 @@ define('APPSECRET', 'f0935021fa50e3c3d5147ed4afe8b551');
 
 class WechatController extends Controller
 {
+    protected $wechat;
+    /**
+     * WechatController constructor.
+     */
+    public function __construct()
+    {
+        $this->wechat = app('wechat.official_account');
+    }
+
     public function valid()//验证接口的方法
     {
         $echoStr = $_GET["echostr"];//从微信用户端获取一个随机字符赋予变量echostr
@@ -142,7 +151,19 @@ class WechatController extends Controller
             info($message);
             switch ($message['MsgType']) {
                 case 'event':
-                    return '收到事件消息';
+
+                    $res = $this->wechat->template_message->sendSubscription([
+                        'touser' => 'oE_DPvqJnFGZc-zXQXAwPa6XtF48',
+                        'template_id' => 'sW3tC35gfCfHYk2SH-0FxcvTnSrA1YlBh4QbLPckd3U',
+                        'url' => 'https://easywechat.org',
+                        'scene' => 1000,
+                        'data' => [
+                            'name' => '东瀛',
+                            'address' => '南极',
+                        ]
+                    ]);
+
+                    return '收到事件消息,并推送一条事件给你';
                     break;
                 case 'text':
                     $openId = $message['FromUserName'];
