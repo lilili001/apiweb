@@ -53,7 +53,7 @@ Route::group(['middleware' => ['web', 'wechat.oauth']], function ($router) {
 
         $user = app('wechat.official_account')->oauth->scopes(['snsapi_userinfo'])
             ->redirect();
-        dd($user->toArray());
+        dd($user);
         return view('wuser',compact('user'));
     });
 });
