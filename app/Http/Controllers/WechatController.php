@@ -146,22 +146,24 @@ class WechatController extends Controller
         //获取用户
         $userApi = $wechat->user;
 
-        $wechat->server->push(function ($message) use($userApi) {
+        $wechat->server->push(function ($message) use($userApi , $wechat) {
             info('message');
             info($message);
             switch ($message['MsgType']) {
                 case 'event':
 
-                    $res = $this->wechat->template_message->sendSubscription([
-                        'touser' => 'oE_DPvqJnFGZc-zXQXAwPa6XtF48',
-                        'template_id' => 'sW3tC35gfCfHYk2SH-0FxcvTnSrA1YlBh4QbLPckd3U',
-                        'url' => 'https://easywechat.org',
-                        'scene' => 1000,
-                        'data' => [
-                            'name' => '东瀛',
-                            'address' => '南极',
-                        ]
-                    ]);
+                    if( $message['Event'] == 'subscribe' ){
+                        $wechat->template_message->sendSubscription([
+                            'touser' => $message['FromUserName'],
+                            'template_id' => 'sW3tC35gfCfHYk2SH-0FxcvTnSrA1YlBh4QbLPckd3U',
+                            'url' => 'https://easywechat.org',
+                            'scene' => 1000,
+                            'data' => [
+                                'name' => '东瀛',
+                                'address' => '南极',
+                            ]
+                        ]);
+                    }
 
                     return '收到事件消息,并推送一条事件给你';
                     break;
