@@ -27,6 +27,8 @@ Route::group(['prefix'=>'wxApi'],function($router){
     $router->post('sendTemplateMsg','WxCbController@sendTemplateMsg');
 });
 
+Route::any('wechat',"WechatController@serve");
+
 Route::group(['middleware'=>'web'],function (){
     Route::get('users','UsersController@users');
     Route::get('user/{openid}','UsersController@user');
@@ -63,9 +65,6 @@ Route::group(['middleware' => ['web', 'wechat.oauth']], function ($router) {
     });
 });
 
-
-Route::any('wechat',"WechatController@serve");
-
 Route::get('qr',function (){
     $wechat = app('wechat.official_account');
     $qrcode = $wechat->qrcode;
@@ -78,3 +77,7 @@ Route::get('qr',function (){
     $router->post('wx', 'WechatController@responseMsg' );
     $router->get('createMenu','WechatController@createMenu');
 });*/
+
+Route::get('test',function(){
+
+});

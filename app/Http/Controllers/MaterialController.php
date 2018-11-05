@@ -167,15 +167,16 @@ class MaterialController extends Controller
         //dd($users);
 
         //发送模板消息
-        /*$res = $this->wechat->template_message->send([
+        $res = $this->wechat->template_message->send([
             'touser' => 'oE_DPvqJnFGZc-zXQXAwPa6XtF48',
             'template_id' => 'sW3tC35gfCfHYk2SH-0FxcvTnSrA1YlBh4QbLPckd3U',
             'url' => 'https://easywechat.org',
             'data' => [
                 'price' => ['128', '#cc0000']
             ],
-        ]);*/
+        ]);
 
+        dd( $this->wechat->broadcasting->sendNews("6N2Wu2qHBkGBqpruD0ZI9-wXvO835A0j636cH8AIK8M") );
 
         $res = $this->wechat->template_message->sendSubscription([
             'touser' => 'oE_DPvqJnFGZc-zXQXAwPa6XtF48',

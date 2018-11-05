@@ -141,6 +141,11 @@ class WechatController extends Controller
 
     public function serve()
     {
+        info( date('y-m-d h:i:s',time()) );
+        $postStr = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : file_get_contents("php://input");
+        $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+        info('postObj:'.json_encode($postObj));
+
         //step1: 用户发消息或关注 回复一条消息给用户
         $wechat = app('wechat.official_account');
         //获取用户
