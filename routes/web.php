@@ -78,6 +78,16 @@ Route::get('qr',function (){
     $router->get('createMenu','WechatController@createMenu');
 });*/
 
-Route::get('test',function(){
+
+Route::get('mail',function (){
+    \Illuminate\Support\Facades\Mail::to("2861166132@qq.com")->send(new \App\Mail\welcomeToMiya());
+});
+
+Route::get("test1",function(){
+    return redirect("test2");
+});
+
+Route::get("test2",function(){
+    return view('test2');
 
 });
