@@ -13,7 +13,7 @@
 <button id="share1">分享朋友圈</button>
 <button id="share2">分享给朋友</button>
 
-<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
     wx.config(<?php echo app('wechat.official_account')->jssdk->buildConfig(array('onMenuShareQQ', 'onMenuShareWeibo'), true) ?>);
     wx.ready(function () {
@@ -39,7 +39,7 @@
                 },
                 cancel: function () {
                     // 用户取消分享后执行的回调函数  
-                    // alert('淘气了哦，你取消分享');  
+                     alert('淘气了哦，你取消分享');  
                 },
                 fail: function (res) {
                     alert(JSON.stringify(res));
