@@ -1,4 +1,14 @@
-<h1>这个是jssdk页面!</h1>
+<!DOCTYPE html>
+<html class=" theme-gb" data-theme-dir="/themes/gb/m">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="dns-prefetch" href="//s.mothercare.vip">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, minimum-scale=1, viewport-fit=cover">
+</head>
+<body>
+    <h1>这个是jssdk页面!</h1>
 
 <button id="share1">分享朋友圈</button>
 <button id="share2">分享给朋友</button>
@@ -65,3 +75,5 @@
 
 
 </script>
+</body>
+</html>
