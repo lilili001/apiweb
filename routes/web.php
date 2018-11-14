@@ -50,6 +50,7 @@ Route::group(['middleware'=>'web'],function (){
     Route::get('menulist',"MaterialController@menulist");
     Route::get('create_menu',"MaterialController@create_menu");
 
+    //消息模板
     Route::get('templateList',"MaterialController@templateList");
 });
 
@@ -83,11 +84,9 @@ Route::get('mail',function (){
     \Illuminate\Support\Facades\Mail::to("2861166132@qq.com")->send(new \App\Mail\welcomeToMiya());
 });
 
+
 Route::get("test1",function(){
     return redirect("test2");
 });
 
-Route::get("test2",function(){
-    return view('test2');
-
-});
+Route::get("jssdk", "JSSDKController@jssdk");
