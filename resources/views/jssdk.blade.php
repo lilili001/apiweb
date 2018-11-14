@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, minimum-scale=1, viewport-fit=cover">
 </head>
 <body>
-    <h1>这个是jssdk页面!</h1>
+    <h1>这个是jssdk页面01!</h1>
 
 <button id="share1">分享朋友圈</button>
 <button id="share2">分享给朋友</button>
@@ -28,7 +28,21 @@
             shareImgUrl = "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2890253114,12112746&fm=26&gp=0.jpg";
 
         btn1.onclick=function () {
-            wx.onMenuShareTimeline({
+
+            wx.onMenuShareQQ({
+                title: shareTitle, // 分享标题
+                desc: shareDesc, // 分享描述
+                link: shareLink, // 分享链接
+                imgUrl: shareImgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+
+            /*wx.onMenuShareTimeline({
                 title: shareTitle, // 分享标题  
                 link: shareLink, // 分享链接  
                 desc:shareDesc,
@@ -44,12 +58,12 @@
                 fail: function (res) {
                     alert(JSON.stringify(res));
                 }
-            });
+            });*/
         };
 
         btn2.onclick = function () {
             //分享给朋友  
-            wx.onMenuShareAppMessage({
+            /*wx.onMenuShareAppMessage({
                 title: shareTitle, // 分享标题  
                 link: shareLink, // 分享链接  
                 desc:shareDesc,
@@ -60,12 +74,12 @@
                 },
                 cancel: function () {
                     // 用户取消分享后执行的回调函数  
-                    // alert('淘气了哦，你取消分享');  
+                     alert('淘气了哦，你取消分享');  
                 },
                 fail: function (res) {
                     alert(JSON.stringify(res));
                 }
-            });
+            });*/
         }
         
 
