@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
-define("TOKEN", "weixin");
-define('APPID','wx2a14dfa04ea63060');
-define('APPSECRET','eb5bc7d0b1c6745aedeb68ad39348b7c');
+define("TOKEN", env('WECHAT_OFFICIAL_ACCOUNT_TOKEN'));
+define('APPID', env('WECHAT_OFFICIAL_ACCOUNT_APPID'));
+define('APPSECRET', env('WECHAT_OFFICIAL_ACCOUNT_SECRET'));
 
 class WxCbController extends Controller
 {
