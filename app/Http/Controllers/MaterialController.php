@@ -53,11 +53,17 @@ class MaterialController extends Controller
         return $this->wechat->material->uploadArticle($article);
     }
 
+    public function audio()
+    {
+        $audio = $this->wechat->material->uploadVoice(public_path('audio/20180901_e02802b85b37062d48baPysNe4uLSkpj.mp3') );
+        return $audio;
+    }
     /*******************获取所有的图片素材列表**************************************/
     /*******************经过上面的 image方法上传完图片后 此处在这个列表中可以看到********************************/
     public function materialList()
     {
-        $list = $this->wechat->material->list('images');
+        //这里是获取所有图片素材 还可以获取$type 素材的类型，图片（image）、视频（video）、语音 （voice）、图文（news）
+        $list = $this->wechat->material->list('image');
         dd($list);
     }
 

@@ -39,7 +39,7 @@ Route::group(['middleware'=>'web'],function (){
     Route::get('materialList',"MaterialController@materialList");
     Route::get('image',"MaterialController@image"); //上传图片素材
     Route::get('uploadNews',"MaterialController@uploadNews"); // 上传单篇图文
-    Route::get('audio',"MaterialController@audio");
+    Route::get('voice',"MaterialController@audio");//上传音频
     Route::get('material/{mediaid}',"MaterialController@material");
 
     //测试获取token
