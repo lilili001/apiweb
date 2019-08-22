@@ -10,10 +10,6 @@ use EasyWeChat\Kernel\Messages\NewsItem;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
-define("TOKEN", env('WECHAT_OFFICIAL_ACCOUNT_TOKEN'));
-define('APPID', env('WECHAT_OFFICIAL_ACCOUNT_APPID'));
-define('APPSECRET', env('WECHAT_OFFICIAL_ACCOUNT_SECRET'));
-
 class WechatController extends Controller
 {
     protected $wechat;
@@ -67,10 +63,10 @@ class WechatController extends Controller
                     return '收到事件消息,并推送一条事件给你,你好 欢迎关注。。。';
                     break;
                 case 'text':
-                    $openId = $message['FromUserName'];
+                    $openId = $message['FromUserName'];//用户的openId
                     info('user info');
                     info( $userApi->get( $openId ) );
-                    $user = $userApi->get( $openId );
+                    $user = $userApi->get( $openId ); //拿到用户信息
                     //return '收到文字消息,你好:' . $user['nickname'] ;
 
                     $media = new Media('6N2Wu2qHBkGBqpruD0ZI9-wXvO835A0j636cH8AIK8M', 'mpnews');

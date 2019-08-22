@@ -12,7 +12,6 @@
 */
 
 Route::get('/', function () {
-
     $oauth = app('wechat.official_account')->oauth;
     $user = $oauth->user();
     dd($user);
@@ -27,21 +26,24 @@ Route::group(['prefix'=>'wxApi'],function($router){
     $router->post('sendTemplateMsg','WxCbController@sendTemplateMsg');
 });
 
+//用于和微信交互的方法
 Route::any('wechat',"WechatController@serve");
 
+//下面这些可以直接在浏览器中访问
 Route::group(['middleware'=>'web'],function (){
-    Route::get('users','UsersController@users');
-    Route::get('user/{openid}','UsersController@user');
-    Route::get('remark/{openid}','UsersController@remark');
+    Route::get('users','UsersController@users');//获取所有的用户
+    Route::get('user/{openid}','UsersController@user');//获取用户信息
+    Route::get('remark/{openid}','UsersController@remark');//修改用户备注
 
     //素材管理
     Route::get('materialList',"MaterialController@materialList");
-    Route::get('image',"MaterialController@image");
-    Route::get('uploadNews',"MaterialController@uploadNews");
+    Route::get('image',"MaterialController@image"); //上传图片素材
+    Route::get('uploadNews',"MaterialController@uploadNews"); // 上传单篇图文
     Route::get('audio',"MaterialController@audio");
     Route::get('material/{mediaid}',"MaterialController@material");
 
-    Route::get('test',"MaterialController@test");
+    //测试获取token
+    Route::get('accessToken',"MaterialController@accessToken");
 
     //消息群发
     Route::get('message',"MaterialController@message");

@@ -80,10 +80,11 @@ class MaterialController extends Controller
 
     }
 
-    public function test()
+    public function accessToken()
     {
         $accessToken = $this->wechat->access_token;
         $token = $accessToken->getToken()['access_token'];
+        dd($token);
     }
 
 
