@@ -36,7 +36,7 @@ Route::group(['middleware'=>'web'],function (){
     Route::get('remark/{openid}','UsersController@remark');//修改用户备注
 
     //素材管理
-    Route::get('materialList',"MaterialController@materialList");
+    Route::get('materialList/{type}',"MaterialController@materialList");
     Route::get('image',"MaterialController@image"); //上传图片素材
     Route::get('uploadNews',"MaterialController@uploadNews"); // 上传单篇图文
     Route::get('voice',"MaterialController@audio");//上传音频

@@ -8,6 +8,8 @@ use EasyWeChat\Kernel\Messages\Media;
 use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
 use EasyWeChat\Kernel\Messages\Voice;
+use EasyWeChat\Kernel\Messages\Text;
+
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
@@ -91,10 +93,12 @@ class WechatController extends Controller
                     return $image;
                     break;
                 case 'voice':
-                    $voice = new Volice(['mediaId'=>'6N2Wu2qHBkGBqpruD0ZI96waWxwVpho7CkmkAtGmdvk']);
-                    //作为客服给用户发送音频消息
-                    return $wechat->staff->message($voice)->to($message['FromUserName'])->send();
-                    return '收到语音消息';
+                    $voice = new Voice( '6N2Wu2qHBkGBqpruD0ZI96waWxwVpho7CkmkAtGmdvk' );
+                    $text = new Text('Hello world!');
+                    // $wechat->customer_service->message($text)->to($message['FromUserName'])->send();
+                   //作为客服给用户发送音频消息 消息回复只能回复字符串 所以此处直接调用 然后返回一个 空字符串就可以了
+                    $wechat->customer_service->message($voice)->to($message['FromUserName'])->send();
+                    return '';
                     break;
                 case 'video':
                     return '收到视频消息';

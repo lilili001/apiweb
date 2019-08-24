@@ -60,10 +60,10 @@ class MaterialController extends Controller
     }
     /*******************获取所有的图片素材列表**************************************/
     /*******************经过上面的 image方法上传完图片后 此处在这个列表中可以看到********************************/
-    public function materialList()
+    public function materialList($type)
     {
         //这里是获取所有图片素材 还可以获取$type 素材的类型，图片（image）、视频（video）、语音 （voice）、图文（news）
-        $list = $this->wechat->material->list('image');
+        $list = $this->wechat->material->list($type);
         dd($list);
     }
 
