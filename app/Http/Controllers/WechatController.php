@@ -41,8 +41,8 @@ class WechatController extends Controller
             info($message);
             switch ($message['MsgType']) {
                 case 'event':
-
-                    if( $message['Event'] == 'subscribe' ){
+                    //如果是关注事件
+                    if( $message->event == 'subscribe' ){
                         try{
                             $res = $wechat->template_message->sendSubscription([
                                 'touser' => $message['FromUserName'],
@@ -89,7 +89,6 @@ class WechatController extends Controller
                     break;
                 case 'image':
                     $image = new Image("6N2Wu2qHBkGBqpruD0ZI9573QfWgtKw2B-rga6qYtH8");
-
                     return $image;
                     break;
                 case 'voice':
@@ -98,7 +97,7 @@ class WechatController extends Controller
                     // $wechat->customer_service->message($text)->to($message['FromUserName'])->send();
                    //作为客服给用户发送音频消息 消息回复只能回复字符串 所以此处直接调用 然后返回一个 空字符串就可以了
                     $wechat->customer_service->message($voice)->to($message['FromUserName'])->send();
-                    return '';
+                    return '你发送了语音, 回复一条音乐给你,哈哈哈';
                     break;
                 case 'video':
                     return '收到视频消息';
