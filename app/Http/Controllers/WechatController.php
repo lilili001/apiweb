@@ -117,13 +117,10 @@ class WechatController extends Controller
             }
         });
 
-
        /* $wechat->server->push(function($message){
             return "欢迎关注 overtrue！";
         });*/
 
         return $wechat->server->serve();
     }
-
-
 }
